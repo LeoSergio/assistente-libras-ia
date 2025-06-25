@@ -2,14 +2,42 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Interprete Libras - Matemática</title>
-  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+  <title>Interprete em Libras</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    #webcam-container {
+      margin: 20px auto;
+      width: 300px;
+      height: 300px;
+      border: 3px solid #ddd;
+      border-radius: 8px;
+    }
+    #video-resposta {
+      display: none;
+      width: 640px;
+      height: 480px;
+      margin: 20px auto;
+      background: #000;
+      border-radius: 8px;
+    }
+    #resultado {
+      margin: 15px;
+      font-size: 1.2em;
+      min-height: 1.5em;
+    }
+  </style>
 </head>
 <body>
   <h1>Faça sua pergunta em Libras</h1>
   <div id="webcam-container"></div>
-  <h2 id="resultado"></h2>
-  <video id="video-resposta" width="320" height="240" controls></video>
+  <div id="resultado">Inicializando...</div>
+  <video id="video-resposta" muted playsinline></video>
   <script src="script.js"></script>
 </body>
 </html>
