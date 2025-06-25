@@ -1,0 +1,6 @@
+O que gravar:
+🎥 Vídeo de entrada (para treinar o modelo):
+Você ou seu colega sinalizando: "Qual é a derivada de 1/x?"
+
+🎥 Vídeo de resposta:
+Você explicando em Libras: “A derivada de 1/x é -1/x².”
