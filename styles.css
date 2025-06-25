@@ -35,7 +35,7 @@ h1 {
     overflow: hidden;
 }
 
-#webcam, #canvas {
+.webcam-canvas {
     position: absolute;
     top: 0;
     left: 0;
