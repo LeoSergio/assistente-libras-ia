@@ -1,43 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Interprete em Libras</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-    #webcam-container {
-      margin: 20px auto;
-      width: 300px;
-      height: 300px;
-      border: 3px solid #ddd;
-      border-radius: 8px;
-    }
-    #video-resposta {
-      display: none;
-      width: 640px;
-      height: 480px;
-      margin: 20px auto;
-      background: #000;
-      border-radius: 8px;
-    }
-    #resultado {
-      margin: 15px;
-      font-size: 1.2em;
-      min-height: 1.5em;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intérprete de Libras Automático</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Faça sua pergunta em Libras</h1>
-  <div id="webcam-container"></div>
-  <div id="resultado">Inicializando...</div>
-  <video id="video-resposta" muted playsinline></video>
-  <script src="script.js"></script>
+    <div class="container">
+        <h1>Intérprete de Libras Automático</h1>
+        
+        <div id="webcam-container">
+            <div id="webcam-wrapper">
+                <video id="webcam" autoplay playsinline></video>
+                <canvas id="canvas"></canvas>
+            </div>
+            <button id="start-btn">Iniciar Câmera</button>
+        </div>
+        
+        <div class="results">
+            <h2>Gesto Detectado: <span id="gesto-resultado">Nenhum</span></h2>
+            <div class="confidence-bar">
+                <div id="confidence-level"></div>
+            </div>
+            <p>Confiança: <span id="confidence-value">0</span>%</p>
+        </div>
+        
+        <div class="video-response">
+            <video id="resposta-video" muted playsinline></video>
+        </div>
+        
+        <div class="debug-panel">
+            <h3>Modo Desenvolvedor</h3>
+            <button id="debug-btn">Mostrar Debug</button>
+            <div id="debug-info" class="hidden">
+                <p>Status: <span id="debug-status">Inicializando...</span></p>
+                <p>Classes do Modelo: <span id="model-classes"></span></p>
+                <p>Última Predição: <span id="last-prediction"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
