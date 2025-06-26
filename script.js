@@ -1,11 +1,14 @@
+let gestoConfirmado = null;
+
 const MODEL_PATH = "model/";
 const VIDEO_SOURCES = {
-    "derivada_1_x": "videos/resposta_derivada_1_x.mp4",
-    "letra_a": "videos/resposta_letra_a.mp4"
+    "derivada_1_x": "resposta_derivada_1_x.mp4",
+    "letra_a": "resposta_letra_a.mp4"
 };
 const CONFIDENCE_THRESHOLD = 0.85;
 
 const startButton = document.getElementById("start-btn");
+const enviarBtn = document.getElementById("enviar-btn");
 const resultadoElement = document.getElementById("gesto-resultado");
 const confidenceBar = document.getElementById("confidence-level");
 const confidenceValue = document.getElementById("confidence-value");
@@ -21,6 +24,7 @@ let webcam = null;
 let isModelLoaded = false;
 let debugMode = false;
 let classes = [];
+let gestoDetectado = null; // ⬅️ Armazena o último gesto válido
 
 async function init() {
     try {
@@ -30,7 +34,17 @@ async function init() {
         modelClassesElement.textContent = classes.join(", ");
         isModelLoaded = true;
         debugStatus.textContent = "Modelo carregado com sucesso";
+
         startButton.addEventListener("click", startWebcam);
+        enviarBtn.addEventListener("click", () => {
+            if (gestoConfirmado) {
+                playResponseVideo(gestoConfirmado);
+            } else {
+                resultadoElement.textContent = "Nenhum gesto válido detectado.";
+                resultadoElement.style.color = "#e67e22";
+            }
+        });
+
         debugBtn.addEventListener("click", toggleDebug);
         debugStatus.textContent = "Aguardando início da câmera...";
     } catch (error) {
@@ -74,11 +88,13 @@ async function predict() {
     try {
         const predictions = await model.predict(webcam.canvas);
         let topPrediction = predictions[0];
+
         for (const pred of predictions) {
             if (pred.probability > topPrediction.probability) {
                 topPrediction = pred;
             }
         }
+
         updateResults(topPrediction);
 
         if (debugMode) {
@@ -87,6 +103,7 @@ async function predict() {
                 confidence: (p.probability * 100).toFixed(1) + "%"
             })), null, 2);
         }
+
     } catch (error) {
         console.error("Erro na predição:", error);
     }
@@ -102,13 +119,19 @@ function updateResults(prediction) {
     if (confidence >= CONFIDENCE_THRESHOLD) {
         resultadoElement.textContent = prediction.className;
         resultadoElement.style.color = "#27ae60";
-        playResponseVideo(prediction.className);
+
+        // ✅ Armazena gesto só se ainda não foi salvo
+        if (!gestoConfirmado) {
+            gestoConfirmado = prediction.className;
+            console.log("Gesto confirmado:", gestoConfirmado);
+        }
     } else {
         resultadoElement.textContent = "Indeterminado";
         resultadoElement.style.color = "#e74c3c";
-        hideResponseVideo();
+        // Não limpamos gestoConfirmado aqui, deixamos salvo até clicar no botão
     }
 }
+
 
 function playResponseVideo(className) {
     if (VIDEO_SOURCES[className]) {
@@ -133,3 +156,27 @@ function toggleDebug() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
+enviarBtn.addEventListener("click", () => {
+    respostaVideo.src = "resposta_derivada_1_x.mp4"; // ou qualquer vídeo
+    respostaVideo.style.display = "block";
+    respostaVideo.muted = true;
+    respostaVideo.playsInline = true;
+
+    respostaVideo.play().catch(e => {
+        respostaVideo.controls = true;
+    });
+});
+function mostrarVideoResposta() {
+    respostaVideo.src = "resposta_derivada_1_x.mp4"; // seu vídeo de demonstração
+    respostaVideo.style.display = "block";
+    respostaVideo.muted = false;              // permite som se quiser
+    respostaVideo.playsInline = true;
+    respostaVideo.controls = true;            // ✅ mostra os controles
+
+    // NÃO chama play() diretamente
+}
+
+enviarBtn.addEventListener("click", mostrarVideoResposta);
+
+

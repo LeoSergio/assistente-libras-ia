@@ -4,3 +4,9 @@ Você ou seu colega sinalizando: "Qual é a derivada de 1/x?"
 
 🎥 Vídeo de resposta:
 Você explicando em Libras: “A derivada de 1/x é -1/x².”
+
+
+se o gesto não for identificado ou for outro q não seja seja a resposta
+mostrar erro de "gesto não reconhecido"
+
+opção botão de enviar pergunta,por ultimo caso
